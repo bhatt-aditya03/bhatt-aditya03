@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aditya Bhatt — ML Engineer & Developer</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0a;
+    --surface: #111111;
+    --border: #1e1e1e;
+    --accent: #e8ff47;
+    --accent2: #47ffe8;
+    --text: #e8e8e0;
+    --muted: #555550;
+    --tag-bg: #1a1a1a;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* NOISE OVERLAY */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 999;
+    opacity: 0.3;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 3rem;
+    border-bottom: 1px solid var(--border);
+    backdrop-filter: blur(20px);
+    background: rgba(10,10,10,0.85);
+  }
+
+  .nav-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.4rem;
+    letter-spacing: 0.15em;
+    color: var(--accent);
+  }
+
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--muted);
+    text-decoration: none;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--text); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 8rem 3rem 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-grid-line {
+    position: absolute;
+    top: 0; bottom: 0;
+    width: 1px;
+    background: var(--border);
+  }
+  .hero-grid-line:nth-child(1) { left: 25%; }
+  .hero-grid-line:nth-child(2) { left: 50%; }
+  .hero-grid-line:nth-child(3) { left: 75%; }
+
+  .hero-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--accent);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards 0.2s;
+  }
+
+  .hero-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(4.5rem, 12vw, 10rem);
+    line-height: 0.9;
+    letter-spacing: -0.01em;
+    color: var(--text);
+    opacity: 0;
+    animation: fadeUp 0.7s ease forwards 0.35s;
+  }
+
+  .hero-name span { color: var(--accent); }
+
+  .hero-sub {
+    margin-top: 2rem;
+    font-size: 1.05rem;
+    color: var(--muted);
+    max-width: 520px;
+    font-weight: 300;
+    opacity: 0;
+    animation: fadeUp 0.7s ease forwards 0.5s;
+  }
+
+  .hero-cta {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2.5rem;
+    opacity: 0;
+    animation: fadeUp 0.7s ease forwards 0.65s;
+  }
+
+  .btn {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 0.85rem 1.8rem;
+    border: 1px solid;
+    text-decoration: none;
+    transition: all 0.2s;
+    cursor: pointer;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: #0a0a0a;
+    border-color: var(--accent);
+  }
+  .btn-primary:hover { background: transparent; color: var(--accent); }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--text);
+    border-color: var(--border);
+  }
+  .btn-secondary:hover { border-color: var(--text); }
+
+  .hero-stats {
+    display: flex;
+    gap: 3rem;
+    margin-top: 5rem;
+    padding-top: 3rem;
+    border-top: 1px solid var(--border);
+    opacity: 0;
+    animation: fadeUp 0.7s ease forwards 0.8s;
+  }
+
+  .stat-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.2rem;
+    color: var(--accent);
+    line-height: 1;
+  }
+  .stat-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-top: 0.3rem;
+  }
+
+  /* SECTIONS */
+  section {
+    padding: 6rem 3rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--accent);
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    margin-bottom: 0.8rem;
+  }
+
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    letter-spacing: 0.02em;
+    color: var(--text);
+    line-height: 1;
+    margin-bottom: 3rem;
+  }
+
+  /* PROJECTS */
+  .projects-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5px;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+
+  .project-card {
+    background: var(--bg);
+    padding: 2.5rem;
+    transition: background 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .project-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px;
+    height: 0;
+    background: var(--accent);
+    transition: height 0.3s ease;
+  }
+
+  .project-card:hover { background: var(--surface); }
+  .project-card:hover::before { height: 100%; }
+
+  .project-number {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 4rem;
+    color: var(--border);
+    line-height: 1;
+    margin-bottom: 1rem;
+    transition: color 0.2s;
+  }
+  .project-card:hover .project-number { color: #1e1e1e; }
+
+  .project-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.8rem;
+    letter-spacing: 0.05em;
+    color: var(--text);
+    margin-bottom: 0.8rem;
+  }
+
+  .project-desc {
+    font-size: 0.9rem;
+    color: var(--muted);
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+  }
+
+  .project-highlight {
+    background: var(--tag-bg);
+    border: 1px solid var(--border);
+    padding: 0.6rem 1rem;
+    margin-bottom: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .highlight-dot { width: 6px; height: 6px; background: var(--accent2); flex-shrink: 0; }
+  .highlight-dot.yellow { background: var(--accent); }
+
+  .highlight-text {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--text);
+  }
+
+  .project-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1.5rem;
+  }
+
+  .tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    padding: 0.3rem 0.7rem;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .project-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-top: 1.5rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--accent);
+    text-decoration: none;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.2s;
+  }
+  .project-link:hover { border-color: var(--accent); }
+
+  /* STACK */
+  .stack-section { max-width: 1200px; }
+
+  .stack-row {
+    display: flex;
+    align-items: stretch;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .stack-category {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--muted);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    width: 160px;
+    flex-shrink: 0;
+    padding: 1.4rem 0;
+    border-right: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+  }
+
+  .stack-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    padding: 1.2rem 2rem;
+    align-items: center;
+  }
+
+  .stack-pill {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    padding: 0.4rem 0.9rem;
+    background: var(--tag-bg);
+    border: 1px solid var(--border);
+    color: var(--text);
+    letter-spacing: 0.05em;
+    transition: all 0.15s;
+  }
+  .stack-pill:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* ABOUT */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: start;
+  }
+
+  .about-body {
+    font-size: 1rem;
+    color: #888882;
+    line-height: 1.9;
+  }
+
+  .about-body p + p { margin-top: 1.2rem; }
+
+  .about-right { border-left: 1px solid var(--border); padding-left: 4rem; }
+
+  .about-item {
+    padding: 1.4rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .about-item-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--muted);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 0.4rem;
+  }
+
+  .about-item-value {
+    font-size: 0.95rem;
+    color: var(--text);
+  }
+
+  /* CONTACT */
+  .contact-section {
+    text-align: center;
+    padding: 6rem 3rem 8rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .contact-section .section-label { display: inline-block; margin-bottom: 1rem; }
+
+  .contact-headline {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(3rem, 8vw, 7rem);
+    letter-spacing: 0.02em;
+    line-height: 0.95;
+    margin-bottom: 1.5rem;
+  }
+
+  .contact-headline span { color: var(--accent); }
+
+  .contact-email {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-bottom: 2.5rem;
+    letter-spacing: 0.1em;
+  }
+
+  .contact-links {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  /* FOOTER */
+  footer {
+    padding: 1.5rem 3rem;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  footer span {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .reveal.visible { opacity: 1; transform: none; }
+
+  @media (max-width: 768px) {
+    nav { padding: 1.2rem 1.5rem; }
+    .nav-links { display: none; }
+    .hero { padding: 6rem 1.5rem 3rem; }
+    .hero-stats { gap: 2rem; flex-wrap: wrap; }
+    section { padding: 4rem 1.5rem; }
+    .projects-grid { grid-template-columns: 1fr; }
+    .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .about-right { border-left: none; padding-left: 0; border-top: 1px solid var(--border); padding-top: 2rem; }
+    .stack-row { flex-direction: column; }
+    .stack-category { width: 100%; border-right: none; border-bottom: 1px solid var(--border); }
+    .stack-items { padding: 1rem 0; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">AB</div>
+  <ul class="nav-links">
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#stack">Stack</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" style="max-width:100%; padding-top:8rem;">
+  <div class="hero-grid-line"></div>
+  <div class="hero-grid-line"></div>
+  <div class="hero-grid-line"></div>
+
+  <div class="hero-tag">ML Engineer · iOS Developer · Backend Developer</div>
+  <h1 class="hero-name">Aditya<br><span>Bhatt</span></h1>
+  <p class="hero-sub">I build end-to-end AI systems — from training models on 300k real-world records to shipping live iOS apps powered by LLMs.</p>
+  <div class="hero-cta">
+    <a href="#projects" class="btn btn-primary">View Projects</a>
+    <a href="mailto:bhatt.aditya1105@gmail.com" class="btn btn-secondary">Get In Touch</a>
+  </div>
+  <div class="hero-stats">
+    <div>
+      <div class="stat-num">307K</div>
+      <div class="stat-label">Real loan records processed</div>
+    </div>
+    <div>
+      <div class="stat-num">0.68</div>
+      <div class="stat-label">XGBoost AUC score</div>
+    </div>
+    <div>
+      <div class="stat-num">3</div>
+      <div class="stat-label">Live shipped projects</div>
+    </div>
+    <div>
+      <div class="stat-num">3rd</div>
+      <div class="stat-label">Year @ PSIT Kanpur</div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects" style="max-width:100%; padding-left:3rem; padding-right:3rem;">
+  <div class="reveal">
+    <div class="section-label">// 01 — Work</div>
+    <div class="section-title">Featured Projects</div>
+  </div>
+
+  <div class="projects-grid reveal">
+    <!-- Credit Risk -->
+    <div class="project-card">
+      <div class="project-number">01</div>
+      <div class="project-title">Credit Risk Analyzer</div>
+      <p class="project-desc">Alternative credit scoring system trained on 307,511 real loan applications. Predicts default probability and outputs a FICO-style score (300–900).</p>
+
+      <div class="project-highlight">
+        <div class="highlight-dot yellow"></div>
+        <span class="highlight-text">XGBoost AUC 0.6805 vs Logistic Regression baseline 0.6063 (+12.3%)</span>
+      </div>
+      <div class="project-highlight">
+        <div class="highlight-dot yellow"></div>
+        <span class="highlight-text">307,511 real loan application records</span>
+      </div>
+      <div class="project-highlight">
+        <div class="highlight-dot yellow"></div>
+        <span class="highlight-text">Credit score output: 300–900 scale · FastAPI integration in progress</span>
+      </div>
+
+      <div class="project-tags">
+        <span class="tag">Python</span>
+        <span class="tag">XGBoost</span>
+        <span class="tag">Scikit-learn</span>
+        <span class="tag">Pandas</span>
+        <span class="tag">FastAPI</span>
+        <span class="tag">EDA</span>
+      </div>
+      <a class="project-link" href="https://github.com/bhatt-aditya03/credit-risk-analyzer" target="_blank">View on GitHub →</a>
+    </div>
+
+    <!-- FitMacroAI -->
+    <div class="project-card">
+      <div class="project-number">02</div>
+      <div class="project-title">FitMacroAI</div>
+      <p class="project-desc">Full-stack iOS app that parses natural language food input into precise macro data using LLaMA 3.3 70B. Type any food in any language — get instant nutrition breakdown.</p>
+
+      <div class="project-highlight">
+        <div class="highlight-dot"></div>
+        <span class="highlight-text">"rajma chawal 1 katori" → 420 cal · 19g protein · 60g carbs · 14g fat</span>
+      </div>
+      <div class="project-highlight">
+        <div class="highlight-dot"></div>
+        <span class="highlight-text">LLaMA 3.3 70B via Groq · FastAPI backend deployed on Railway</span>
+      </div>
+      <div class="project-highlight">
+        <div class="highlight-dot"></div>
+        <span class="highlight-text">Native SwiftUI iOS app · Daily reset · Data persistence</span>
+      </div>
+
+      <div class="project-tags">
+        <span class="tag">Swift</span>
+        <span class="tag">SwiftUI</span>
+        <span class="tag">FastAPI</span>
+        <span class="tag">Groq SDK</span>
+        <span class="tag">LLaMA 3.3 70B</span>
+        <span class="tag">Railway</span>
+      </div>
+      <div style="display:flex; gap:1.5rem;">
+        <a class="project-link" href="https://github.com/bhatt-aditya03/FitMacroAI" target="_blank">iOS App →</a>
+        <a class="project-link" href="https://github.com/bhatt-aditya03/FitMacroAI-Backend" target="_blank">Backend →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STACK -->
+<section id="stack" style="max-width:1200px;">
+  <div class="reveal">
+    <div class="section-label">// 02 — Arsenal</div>
+    <div class="section-title">Tech Stack</div>
+  </div>
+
+  <div style="border-top: 1px solid var(--border);" class="reveal">
+    <div class="stack-row">
+      <div class="stack-category">ML / Data</div>
+      <div class="stack-items">
+        <span class="stack-pill">Python</span>
+        <span class="stack-pill">XGBoost</span>
+        <span class="stack-pill">Scikit-learn</span>
+        <span class="stack-pill">Pandas</span>
+        <span class="stack-pill">NumPy</span>
+        <span class="stack-pill">Matplotlib</span>
+        <span class="stack-pill">EDA</span>
+        <span class="stack-pill">Feature Engineering</span>
+      </div>
+    </div>
+    <div class="stack-row">
+      <div class="stack-category">Backend</div>
+      <div class="stack-items">
+        <span class="stack-pill">FastAPI</span>
+        <span class="stack-pill">Python</span>
+        <span class="stack-pill">REST APIs</span>
+        <span class="stack-pill">Railway</span>
+        <span class="stack-pill">JSON</span>
+      </div>
+    </div>
+    <div class="stack-row">
+      <div class="stack-category">iOS</div>
+      <div class="stack-items">
+        <span class="stack-pill">Swift</span>
+        <span class="stack-pill">SwiftUI</span>
+        <span class="stack-pill">iOS 17+</span>
+        <span class="stack-pill">Xcode</span>
+        <span class="stack-pill">UserDefaults</span>
+      </div>
+    </div>
+    <div class="stack-row">
+      <div class="stack-category">AI / LLM</div>
+      <div class="stack-items">
+        <span class="stack-pill">Groq SDK</span>
+        <span class="stack-pill">LLaMA 3.3 70B</span>
+        <span class="stack-pill">Prompt Engineering</span>
+        <span class="stack-pill">LLM APIs</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="reveal">
+    <div class="section-label">// 03 — About</div>
+    <div class="section-title">Who I Am</div>
+  </div>
+  <div class="about-grid reveal">
+    <div class="about-body">
+      <p>I'm a 3rd year B.Tech CSE (Data Science) student at Pranveer Singh Institute of Technology, Kanpur. I don't just train models — I build complete systems around them.</p>
+      <p>My work spans the full stack: raw data → ML model → API → product. The Credit Risk Analyzer went from 300k+ raw loan records to a FICO-style scoring system. FitMacroAI went from an idea to a deployed iOS app with a live LLM backend.</p>
+      <p>I'm actively looking for ML engineering, backend, or iOS internship opportunities where I can contribute to real systems and grow fast.</p>
+    </div>
+    <div class="about-right">
+      <div class="about-item">
+        <div class="about-item-label">Education</div>
+        <div class="about-item-value">B.Tech CSE (Data Science) · PSIT Kanpur</div>
+      </div>
+      <div class="about-item">
+        <div class="about-item-label">Year</div>
+        <div class="about-item-value">3rd Year (2022–2026)</div>
+      </div>
+      <div class="about-item">
+        <div class="about-item-label">Location</div>
+        <div class="about-item-value">Prayagraj / Kanpur, India</div>
+      </div>
+      <div class="about-item">
+        <div class="about-item-label">Interests</div>
+        <div class="about-item-value">ML Engineering · LLM Systems · iOS Development</div>
+      </div>
+      <div class="about-item">
+        <div class="about-item-label">Open To</div>
+        <div class="about-item-value" style="color: var(--accent);">Internships · Freelance · Collaborations</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<div class="contact-section" id="contact">
+  <div class="section-label">// 04 — Contact</div>
+  <div class="contact-headline">
+    Let's<br><span>Build</span><br>Together
+  </div>
+  <div class="contact-email">bhatt.aditya1105@gmail.com</div>
+  <div class="contact-links">
+    <a href="mailto:bhatt.aditya1105@gmail.com" class="btn btn-primary">Send Email</a>
+    <a href="https://github.com/bhatt-aditya03" target="_blank" class="btn btn-secondary">GitHub Profile</a>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <span>© 2026 Aditya Bhatt</span>
+  <span>Built with HTML · CSS · No frameworks</span>
+</footer>
+
+<script>
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 80);
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(r => observer.observe(r));
+</script>
+</body>
+</html>
