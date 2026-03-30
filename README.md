@@ -1,53 +1,70 @@
 # Aditya Bhatt
 
-**B.Tech CSE (Data Science) · Pranveer Singh Institute of Technology, Kanpur · 3rd Year**
+**B.Tech CSE (Data Science) · Pranveer Singh Institute of Technology, Kanpur · Expected June 2027**
 
-I build end-to-end systems — from training ML models on real-world financial data to shipping full-stack AI products with live backends. Currently focused on ML engineering, backend development, and iOS.
+3rd year CS student interested in ML, iOS development, and building things end-to-end. I learn by shipping — most of these projects started as "let me see if I can actually build this" and grew from there.
 
 ---
 
 ## Projects
 
-### [Credit Risk Analyzer](https://github.com/bhatt-aditya03/credit-risk-analyzer)
-Alternative credit scoring system trained on **307,511 real loan applications**.
+### [ProteinLens](https://github.com/bhatt-aditya03/ProteinLens) · *CoreML · iOS*
 
-- Baseline: Logistic Regression AUC **0.6063** → XGBoost AUC **0.6805** (+12.3% lift)
-- Engineered features from raw financial indicators across 300k+ records
-- Score output range: 300–900 (FICO-style), ready for API integration via FastAPI
+On-device food classification iOS app — point your camera at food, get nutrition estimates instantly with no internet required.
+
+- Fine-tuned MobileNetV2 on a 20-class India-optimised Food-101 subset — **86% validation accuracy**
+- Converted to CoreML (`.mlpackage`, ~5.9 MB) via TensorFlow → SavedModel → coremltools
+- Live camera inference using AVFoundation + Vision + CoreML — < 50ms on Neural Engine
+- Serving size slider (50g–500g), daily scan history, tap-to-freeze frame
+- Stack: Swift · CoreML · Vision · AVFoundation · TensorFlow · Python · coremltools
+
+---
+
+### [FitMacroAI](https://github.com/bhatt-aditya03/FitMacroAI) · [Backend](https://github.com/bhatt-aditya03/FitMacroAI-Backend) · *iOS · FastAPI · Deployed*
+
+iOS macro tracking app where you describe food in plain language and get back calorie and macro data.
+
+- Type *"rajma chawal 1 katori"* → **420 cal, 19g protein, 60g carbs, 14g fat**
+- LLaMA 3.3 70B (Groq) handles the food parsing; FastAPI backend deployed on Railway
+- SwiftUI frontend with onboarding flow, daily auto-reset, and UserDefaults persistence
+- Stack: SwiftUI · FastAPI · Python · Groq SDK · Railway
+
+---
+
+### [DocuMind](https://github.com/bhatt-aditya03/DocuMind) · *RAG · Python · Deployed*
+
+Document Q&A tool built on a RAG pipeline — upload a PDF, ask questions, get answers with page-level citations.
+
+- HuggingFace embeddings (`all-MiniLM-L6-v2`) → ChromaDB → LLaMA3-70b (Groq)
+- Confidence indicator, auto-summary on upload, strict document-only prompting to avoid hallucination
+- Live at **[docu-mind03.streamlit.app](https://docu-mind03.streamlit.app)**
+- Stack: Streamlit · FastAPI · LangChain · ChromaDB · HuggingFace · Groq
+
+---
+
+### [Credit Risk Analyzer](https://github.com/bhatt-aditya03/credit-risk-analyzer) · *ML · Python*
+
+Credit scoring model trained on 307,511 real loan applications.
+
+- Baseline Logistic Regression AUC **0.6063** → XGBoost AUC **0.6805** (+12.3% lift)
+- Feature engineering across 300k+ records from raw financial data
+- Score output: 300–900 (FICO-style)
 - Stack: Python · XGBoost · Scikit-learn · Pandas · NumPy
 
-### [FitMacroAI](https://github.com/bhatt-aditya03/FitMacroAI) · [Backend](https://github.com/bhatt-aditya03/FitMacroAI-Backend)
-AI-powered iOS fitness app that parses natural language food input into macro data.
-
-- Type *"rajma chawal 1 katori"* → get **420 cal, 19g protein, 60g carbs, 14g fat** instantly
-- LLaMA 3.3 70B (via Groq API) handles food parsing; FastAPI backend deployed on Railway
-- Native iOS app built in SwiftUI with data persistence, daily reset, onboarding flow
-- Stack: SwiftUI · FastAPI · Python · Groq SDK (LLaMA 3.3 70B) · Railway
-
 ---
 
-## Tech Stack
+## Tech I've worked with
 
-**ML / Data:** Python · XGBoost · Scikit-learn · Pandas · NumPy · Matplotlib  
-**Backend:** FastAPI · REST APIs · Railway deployment  
-**iOS:** Swift · SwiftUI · iOS 17+  
-**AI / LLM:** Groq SDK · LLaMA 3.3 70B · Prompt Engineering  
-
----
-
-## Currently Working On
-
-- Deploying the Credit Risk Analyzer as a live FastAPI service
-- Deepening ML: model deployment, Docker, feature stores
-- Exploring LLM-powered backend systems
+**ML / Data:** Python · TensorFlow · CoreML · coremltools · XGBoost · Scikit-learn · Pandas · NumPy  
+**Backend:** FastAPI · REST APIs · Railway · LangChain  
+**iOS:** Swift · SwiftUI · AVFoundation · Vision · CoreML · iOS 17+  
+**AI / LLM:** Groq SDK · LLaMA 3.3 70B · Prompt Engineering · RAG  
+**Vector DB / Embeddings:** ChromaDB · HuggingFace Sentence Transformers
 
 ---
 
 ## Connect
 
-📧 bhatt.aditya1105@gmail.com  
-💼 LinkedIn: *coming soon*
-
----
-
-> I don't just train models. I build systems around them.
+📧 [bhatt.aditya1105@gmail.com](mailto:bhatt.aditya1105@gmail.com)  
+💼 [linkedin.com/in/bhatt-aditya03](https://linkedin.com/in/bhatt-aditya03)  
+🐙 [github.com/bhatt-aditya03](https://github.com/bhatt-aditya03)
